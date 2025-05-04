@@ -10,7 +10,7 @@ from app.api.deps import CurrentUser, SessionDep, get_current_active_superuser
 from app.core import security
 from app.core.config import settings
 from app.core.security import get_password_hash
-from app.models import Message, NewPassword, Token, UserPublic
+from app.models import Message, NewPassword, Token, UserPublic, UserType
 from app.utils import (
     generate_password_reset_token,
     generate_reset_password_email,
@@ -36,9 +36,22 @@ def login_access_token(
     elif not userdb.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    # Determine the specific user type id
+    role = userdb.role.value
+    specific_id = None
+    if role == UserType.customer.value and userdb.customer:
+        specific_id = userdb.customer.customer_id
+    elif role == UserType.employee.value and userdb.employee:
+        specific_id = userdb.employee.employee_id
+    elif role == UserType.administrator.value and userdb.administrator:
+        specific_id = userdb.administrator.administrator_id
+    elif role == UserType.distributor.value and userdb.distributor:
+        specific_id = userdb.distributor.distributor_id
+    else:
+        specific_id = userdb.user_id  # fallback to user_id if not found
     return Token(
         access_token=security.create_access_token(
-            userdb.user_id, expires_delta=access_token_expires
+            userdb.user_id, expires_delta=access_token_expires, role=role, user_id=specific_id
         )
     )
 

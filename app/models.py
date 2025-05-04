@@ -361,6 +361,7 @@ class SupplierCreate(SupplierBase):
 
 
 class Supplier(SupplierBase, table=True):
+    __tablename__ = "suppliers"
     supplier_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
     updated_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
@@ -384,6 +385,7 @@ class InventoryCreate(InventoryBase):
 
 
 class Inventory(InventoryBase, table=True):
+    __tablename__ = "inventory"
     inventory_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
     updated_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
 
@@ -434,6 +436,7 @@ class OrderCreate(OrderBase):
 
 
 class Order(OrderBase, table=True):
+    __tablename__ = "orders"
     order_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
     order_date: datetime.datetime = Field(default_factory=datetime.datetime.now)
 
@@ -453,6 +456,7 @@ class OrderDetailCreate(OrderDetailBase):
 
 
 class OrderDetail(OrderDetailBase, table=True):
+    __tablename__ = "order_details"
     order_detail_id: int = Field(default=None, primary_key=True)
 
 
@@ -475,6 +479,7 @@ class RawMaterialInventoryCreate(RawMaterialInventoryBase):
 
 
 class RawMaterialInventory(RawMaterialInventoryBase, table=True):
+    __tablename__ = "raw_material_inventories"
     material_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
     updated_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
@@ -497,6 +502,7 @@ class ManufacturingMachineCreate(ManufacturingMachineBase):
 
 
 class ManufacturingMachine(ManufacturingMachineBase, table=True):
+    __tablename__ = "manufacturing_machines"
     machine_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
 
 
@@ -518,6 +524,7 @@ class ProductionBatchCreate(ProductionBatchBase):
 
 
 class ProductionBatch(ProductionBatchBase, table=True):
+    __tablename__ = "production_batches"
     batch_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
 
@@ -540,6 +547,7 @@ class QualityControlCreate(QualityControlBase):
 
 
 class QualityControl(QualityControlBase, table=True):
+    __tablename__ = "quality_controls"
     quality_check_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
 
 
@@ -562,6 +570,7 @@ class InvoicePaymentCreate(InvoicePaymentBase):
 
 
 class InvoicePayment(InvoicePaymentBase, table=True):
+    __tablename__ = "invoice_payments"
     invoice_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
 
 
@@ -584,6 +593,7 @@ class ShippingDeliveryCreate(ShippingDeliveryBase):
 
 
 class ShippingDelivery(ShippingDeliveryBase, table=True):
+    __tablename__ = "shipping_deliveries"
     shipping_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
 
 
@@ -625,4 +635,5 @@ class CustomerReturnCreate(CustomerReturnBase):
 
 
 class CustomerReturn(CustomerReturnBase, table=True):
+    __tablename__ = "customer_returns"
     return_id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})

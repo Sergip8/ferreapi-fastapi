@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from sqlmodel import Session, select
 from app.models import Category, CategoryCreate
 
@@ -37,22 +37,17 @@ def get_main_categories(*, session: Session) -> List[Category]:
     categories = session.exec(statement).all()
     return categories
 
-def get_category_by_id(*, session: Session, category_id: int) -> Category | None:
-    """Get category by ID"""
+def get_category_by_id(session: Session, category_id: int) -> Optional[Category]:
     return session.get(Category, category_id)
 
-def create_category(*, session: Session, category_in: CategoryCreate) -> Category:
-    """Create new category"""
+def create_category(session: Session, category_in: CategoryCreate) -> Category:
     db_obj = Category.model_validate(category_in)
     session.add(db_obj)
     session.commit()
     session.refresh(db_obj)
     return db_obj
 
-def update_category(
-    *, session: Session, db_obj: Category, obj_in: CategoryCreate
-) -> Category:
-    """Update category"""
+def update_category(session: Session, db_obj: Category, obj_in: CategoryCreate) -> Category:
     obj_data = obj_in.model_dump(exclude_unset=True)
     for key, value in obj_data.items():
         setattr(db_obj, key, value)
@@ -61,10 +56,9 @@ def update_category(
     session.refresh(db_obj)
     return db_obj
 
-def delete_category(*, session: Session, category_id: int) -> Category:
-    """Delete category"""
-    category = session.get(Category, category_id)
-    if category:
-        session.delete(category)
+def delete_category(session: Session, category_id: int) -> Optional[Category]:
+    db_obj = session.get(Category, category_id)
+    if db_obj:
+        session.delete(db_obj)
         session.commit()
-    return category
+    return db_obj

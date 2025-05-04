@@ -31,7 +31,7 @@ class ProductListView(ProductBase):
 
 class PaginatedUsersRequest(SQLModel):
     search: Optional[str] = None
-    sort: str = "user_id"
+    sort: str = ""
     order: str = "ASC"
     page: int = 1
     size: int = 10
