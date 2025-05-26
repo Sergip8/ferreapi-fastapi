@@ -7,6 +7,7 @@ from app.crud.category import (
     get_category_by_id,
     get_categories,
     create_category,
+    get_main_categories,
     update_category,
     delete_category
 )
@@ -15,9 +16,27 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+@router.get("/main", response_model=List[Category])
+def read_main_categories(
+    db: Session = Depends(get_db),
+) -> List[Category]:
+    """
+    Retrieve all main categories (categories without parent).
+    """
+    categories = get_main_categories(session=db)
+    return categories
+
 @router.get("/", response_model=List[Category])
 def read_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return get_categories(db, skip=skip, limit=limit)
+
+@router.get("/menu", response_model=List[Category])
+def get_menu_categories(db: Session = Depends(get_db)) -> List[Category]:
+    """
+    Retrieve all categories for menu.
+    """
+    categories = db.exec(select(Category)).all()
+    return categories
 
 @router.get("/{category_id}", response_model=Category)
 def read_category(category_id: int, db: Session = Depends(get_db)):
@@ -66,3 +85,5 @@ def category_paginated(
     offset = (params.page - 1) * params.size
     items = db.exec(query.offset(offset).limit(params.size)).all()
     return PaginatedCategoryResponse(data=items, total=total_count) 
+
+

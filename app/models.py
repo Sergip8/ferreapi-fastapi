@@ -317,6 +317,7 @@ class ProductBase(BaseModelWithConfig):
     brand_id: Optional[int] = Field(default=None, foreign_key="brands.brand_id")
     unit_of_measure: str = Field(max_length=30)
     image_url: Optional[str] = Field(default=None, max_length=255)
+    image_url_details: Optional[str] = Field(default=None, max_length=255)
     status: ProductStatus = Field(default=ProductStatus.active)
     category_id: Optional[int] = Field(default=None, foreign_key="categories.category_id")
     subcategory_id: Optional[int] = Field(default=None, foreign_key="categories.category_id")
